@@ -1,16 +1,20 @@
 클론 이후
 students.csv에 학생 데이터 입력
-이후 아래 명령어 순차적 실행
 
-`npm install -g aws-cdk --force`
+iam-creater.py에서 학교코드와 이름 입력
 
-`python3 -m venv .venv`
+```
+SchoolCode = "YOUR SCHOOL CODE"
+SchoolFullName = "YOUR SCHOOL FULL NAME"
+```
 
-`source .venv/bin/activate`
+start.sh에 실행 권한 적용 후 실행
+`chmod 700 start.sh`
+`./start.sh`
 
-`pip install aws-cdk-lib constructs`
+적용 권한 확인 후 `y`
 
-`cdk deploy --app "python iam-creater.py" -y`
+생성된 result.md의 내용을 학생들에게 전달해서 콘솔 로그인 하도록함
 
 삭제 시 실행 명령어
 `cdk destroy --all`
