@@ -14,8 +14,8 @@ with open('students.csv', newline='') as csvfile:
             'email': row['email']
         })
 
-SchoolCode = "YOUR SCHOOL CODE"
-SchoolFullName = "YOUR SCHOOL FULL NAME"
+SchoolCode = "학교코드넣기"
+SchoolFullName = "학교이름"
 
 class IamStack(Stack):
 
@@ -23,8 +23,13 @@ class IamStack(Stack):
         super().__init__(scope, id, **kwargs)
         
         # IAM 그룹 생성
+                # IAM 그룹 생성 또는 가져오기
+        # group = self.get_existing_group(school_code)
+        # if not group:
+        #     group = iam.Group(self, "Group", group_name=school_code)
+        
         group = iam.Group(self, "Group", group_name=f"{school_code}")
-                # 정책 생성
+        # 정책 생성
         managed_policy_arns = [
             "arn:aws:iam::aws:policy/AmazonBedrockFullAccess",
             "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
@@ -35,7 +40,7 @@ class IamStack(Stack):
             "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
             "arn:aws:iam::aws:policy/AWSMarketplaceFullAccess",
             "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-            "arn:aws:iam::aws:policy/IAMFullAccess"
+            "arn:aws:iam::629515838455:policy/IamCreateRoleAndAttachRolePolicy"
         ]
         
         managed_policies = [iam.ManagedPolicy.from_managed_policy_arn(self, f"ManagedPolicy{i}", managed_policy_arn=arn) for i, arn in enumerate(managed_policy_arns, start=1)]
@@ -52,18 +57,16 @@ class IamStack(Stack):
         iam_users = []  # IAM 사용자 정보를 저장할 리스트
 
         for index, student in enumerate(student_list, start=1):
-            # 이름의 첫 글자를 대문자 이니셜로 추출
-            initials = ''.join([word[0].upper() for word in student['name'].split()])
-            user_name = f"{school_code}-{initials}-{index:03}"
-            password = user_name
+            user_name = f"{school_code}-{index:03}"
+            password = f"{user_name}-{user_name}"
 
             user = iam.CfnUser(self, f"CfnUser{index}",
                 user_name=user_name,
                 login_profile=iam.CfnUser.LoginProfileProperty(
                     password=password,
-                    password_reset_required=False
+                    password_reset_required=True
                 ),
-                managed_policy_arns=["arn:aws:iam::aws:policy/AmazonBedrockFullAccess", "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess", "arn:aws:iam::aws:policy/AmazonEC2FullAccess", "arn:aws:iam::aws:policy/AmazonRDSFullAccess", "arn:aws:iam::aws:policy/AmazonS3FullAccess", "arn:aws:iam::aws:policy/AWSCloud9Administrator", "arn:aws:iam::aws:policy/AWSLambda_FullAccess", "arn:aws:iam::aws:policy/AWSMarketplaceFullAccess", "arn:aws:iam::aws:policy/CloudWatchFullAccess", "arn:aws:iam::aws:policy/IAMFullAccess"],
+                
                 tags=[
                     {"key": "Name", "value": student['name']},
                     {"key": "University", "value": SchoolFullName},
@@ -84,7 +87,7 @@ class IamStack(Stack):
             })
 
         # IAM 사용자 정보를 Markdown 파일로 저장
-        with open('result.md', 'w') as md_file:
+        with open('result.md', 'a') as md_file:
             md_file.write("# IAM 사용자 정보\n")
             md_file.write("# 로그인 콘솔주소: https://smu-inha-cloud.signin.aws.amazon.com/console\n")
             

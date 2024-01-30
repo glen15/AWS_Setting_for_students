@@ -3,3 +3,4 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install aws-cdk-lib constructs
 cdk deploy --app "python iam-creater.py"
+# cdk destroy --app "python iam-creater.py"
