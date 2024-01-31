@@ -31,15 +31,8 @@ class IamStack(Stack):
         group = iam.Group(self, "Group", group_name=f"{school_code}")
         # 정책 생성
         managed_policy_arns = [
-            "arn:aws:iam::aws:policy/AmazonBedrockFullAccess",
-            "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
-            "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
-            "arn:aws:iam::aws:policy/AmazonRDSFullAccess",
-            "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-            "arn:aws:iam::aws:policy/AWSCloud9Administrator",
-            "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
-            "arn:aws:iam::aws:policy/AWSMarketplaceFullAccess",
-            "arn:aws:iam::aws:policy/CloudWatchFullAccess",
+            "arn:aws:iam::629515838455:policy/policy-for-3tier",
+            "arn:aws:iam::629515838455:policy/reject-policy",
             "arn:aws:iam::629515838455:policy/IamCreateRoleAndAttachRolePolicy"
         ]
         
