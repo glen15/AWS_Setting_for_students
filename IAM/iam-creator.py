@@ -32,7 +32,7 @@ class IamStack(Stack):
             "arn:aws:iam::aws:policy/AWSCloud9User",
             "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
             "arn:aws:iam::992382565676:policy/IAM_for_Students",
-            "arn:aws:aim::992382565676:policy/STUDENTS_CAN_NOT_DELETE_ANYTHING",
+            "arn:aws:iam::992382565676:policy/STUDENTS_CAN_NOT_DELETE_ANYTHING",
             "arn:aws:iam::992382565676:policy/DenyInvalidResources"
         ]
         
