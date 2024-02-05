@@ -26,9 +26,14 @@ class IamStack(Stack):
         group = iam.Group(self, "Group", group_name=f"{school_code}")
         # 정책 생성
         managed_policy_arns = [
-            # "arn:aws:iam::629515838455:policy/policy-for-3tier",
-            # "arn:aws:iam::629515838455:policy/reject-policy",
-            # "arn:aws:iam::629515838455:policy/IamCreateRoleAndAttachRolePolicy"
+            "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
+            "arn:aws:iam::aws:policy/AmazonRDSFullAccess",
+            "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+            "arn:aws:iam::aws:policy/AWSCloud9User",
+            "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
+            "arn:aws:iam::992382565676:policy/IAM_for_Students",
+            "arn:aws:aim::992382565676:policy/STUDENTS_CAN_NOT_DELETE_ANYTHING",
+            "arn:aws:iam::992382565676:policy/DenyInvalidResources"
         ]
         
         managed_policies = [iam.ManagedPolicy.from_managed_policy_arn(self, f"ManagedPolicy{i}", managed_policy_arn=arn) for i, arn in enumerate(managed_policy_arns, start=1)]
@@ -77,7 +82,7 @@ class IamStack(Stack):
         # IAM 사용자 정보를 Markdown 파일로 저장
         with open('result.md', 'a') as md_file:
             md_file.write("# IAM 사용자 정보\n")
-            md_file.write("# 로그인 콘솔주소: https://smu-inha-cloud.signin.aws.amazon.com/console\n")
+            md_file.write("# 로그인 콘솔주소: https://mcwithimp-univ.signin.aws.amazon.com/console\n")
             
             md_file.write("| Name | Email | IAM User Name | Password |\n")
             md_file.write("|------|-------|---------------|----------|\n")
