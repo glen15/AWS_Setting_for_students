@@ -21,19 +21,14 @@ class IamStack(Stack):
 
     def __init__(self, scope: App, id: str, school_code: str, student_list: list, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
-        
-        # IAM 그룹 생성
-                # IAM 그룹 생성 또는 가져오기
-        # group = self.get_existing_group(school_code)
-        # if not group:
-        #     group = iam.Group(self, "Group", group_name=school_code)
+    
         
         group = iam.Group(self, "Group", group_name=f"{school_code}")
         # 정책 생성
         managed_policy_arns = [
-            "arn:aws:iam::629515838455:policy/policy-for-3tier",
-            "arn:aws:iam::629515838455:policy/reject-policy",
-            "arn:aws:iam::629515838455:policy/IamCreateRoleAndAttachRolePolicy"
+            # "arn:aws:iam::629515838455:policy/policy-for-3tier",
+            # "arn:aws:iam::629515838455:policy/reject-policy",
+            # "arn:aws:iam::629515838455:policy/IamCreateRoleAndAttachRolePolicy"
         ]
         
         managed_policies = [iam.ManagedPolicy.from_managed_policy_arn(self, f"ManagedPolicy{i}", managed_policy_arn=arn) for i, arn in enumerate(managed_policy_arns, start=1)]
@@ -51,7 +46,7 @@ class IamStack(Stack):
 
         for index, student in enumerate(student_list, start=1):
             user_name = f"{school_code}-{index:03}"
-            password = f"{user_name}-{user_name}"
+            password = f"12345678"
 
             user = iam.CfnUser(self, f"CfnUser{index}",
                 user_name=user_name,
