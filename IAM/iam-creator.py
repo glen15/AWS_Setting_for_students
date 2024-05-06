@@ -26,14 +26,11 @@ class IamStack(Stack):
         group = iam.Group(self, "Group", group_name=f"{school_code}")
         # 정책 생성
         managed_policy_arns = [
-            "arn:aws:iam::aws:policy/AmazonEC2FullAccess",
-            "arn:aws:iam::aws:policy/AmazonRDSFullAccess",
-            "arn:aws:iam::aws:policy/AmazonS3FullAccess",
-            "arn:aws:iam::aws:policy/AWSCloud9User",
-            "arn:aws:iam::aws:policy/AWSLambda_FullAccess",
-            "arn:aws:iam::992382565676:policy/IAM_for_Students",
-            "arn:aws:iam::992382565676:policy/STUDENTS_CAN_NOT_DELETE_ANYTHING",
-            "arn:aws:iam::992382565676:policy/DenyInvalidResources"
+            "arn:aws:iam::730335373015:policy/DenyOverkill",
+            "arn:aws:iam::730335373015:policy/IAMAdvancedAccess",
+            "arn:aws:iam::730335373015:policy/RestrictRegionSeoul",
+            "arn:aws:iam::730335373015:policy/IAMBasicAcess",
+            "arn:aws:iam::730335373015:policy/SafePowerUser"
         ]
         
         managed_policies = [iam.ManagedPolicy.from_managed_policy_arn(self, f"ManagedPolicy{i}", managed_policy_arn=arn) for i, arn in enumerate(managed_policy_arns, start=1)]
