@@ -1,20 +1,41 @@
 import boto3
 
-def delete_gcu_codedeploy_apps():
-    # Boto3 세션 생성
+keyword = "cicd"
+
+def list_target_codedeploy_apps():
     session = boto3.Session()
-    
-    # CodeDeploy 클라이언트 생성
     codedeploy = session.client('codedeploy')
-    
-    # 애플리케이션 목록 가져오기
     response = codedeploy.list_applications()
     
-    # 이름에 "gcu"가 포함된 애플리케이션 찾기 및 삭제
-    for app_name in response.get('applications', []):
-        if 'gcu' in app_name.lower():  # 소문자로 변환하여 비교
-            print(f"Deleting CodeDeploy Application: {app_name}")
-            codedeploy.delete_application(applicationName=app_name)
+    # 키워드를 포함하는 애플리케이션만 필터링
+    target_apps = [app for app in response.get('applications', [])
+                   if keyword in app.lower()]
+    return target_apps
+
+def delete_codedeploy_apps(applications):
+    session = boto3.Session()
+    codedeploy = session.client('codedeploy')
+    
+    for app in applications:
+        print(f"Deleting CodeDeploy Application: {app}")
+        codedeploy.delete_application(applicationName=app)
+
+def main():
+    target_apps = list_target_codedeploy_apps()
+    
+    if target_apps:
+        print("다음 애플리케이션들이 삭제될 것입니다:")
+        for app in target_apps:
+            print(app)
+        
+        confirm = input("위 애플리케이션들을 삭제하시겠습니까? (y/n): ")
+        if confirm.lower() == 'y':
+            delete_codedeploy_apps(target_apps)
+            print("애플리케이션 삭제가 완료되었습니다.")
+        else:
+            print("삭제가 취소되었습니다.")
+    else:
+        print("삭제할 애플리케이션을 찾지 못했습니다.")
 
 if __name__ == '__main__':
-    delete_gcu_codedeploy_apps()
+    main()
