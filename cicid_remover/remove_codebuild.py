@@ -1,20 +1,41 @@
 import boto3
 
-def delete_gcu_codebuild_projects():
-    # Boto3 세션 생성
+keyword = "cicd"
+
+def list_target_codebuild_projects():
     session = boto3.Session()
-    
-    # CodeBuild 클라이언트 생성
     codebuild = session.client('codebuild')
-    
-    # 프로젝트 목록 가져오기
     response = codebuild.list_projects()
     
-    # 이름에 "gcu"가 포함된 프로젝트 찾기 및 삭제
-    for project_name in response.get('projects', []):
-        if 'gcu' in project_name.lower():  # 소문자로 변환하여 비교
-            print(f"Deleting CodeBuild Project: {project_name}")
-            codebuild.delete_project(name=project_name)
+    # 키워드를 포함하는 프로젝트만 필터링
+    target_projects = [project for project in response.get('projects', [])
+                       if keyword in project.lower()]
+    return target_projects
+
+def delete_codebuild_projects(projects):
+    session = boto3.Session()
+    codebuild = session.client('codebuild')
+    
+    for project in projects:
+        print(f"Deleting CodeBuild Project: {project}")
+        codebuild.delete_project(name=project)
+
+def main():
+    target_projects = list_target_codebuild_projects()
+    
+    if target_projects:
+        print("다음 프로젝트들이 삭제될 것입니다:")
+        for project in target_projects:
+            print(project)
+        
+        confirm = input("위 프로젝트들을 삭제하시겠습니까? (y/n): ")
+        if confirm.lower() == 'y':
+            delete_codebuild_projects(target_projects)
+            print("프로젝트 삭제가 완료되었습니다.")
+        else:
+            print("삭제가 취소되었습니다.")
+    else:
+        print("삭제할 프로젝트를 찾지 못했습니다.")
 
 if __name__ == '__main__':
-    delete_gcu_codebuild_projects()
+    main()
