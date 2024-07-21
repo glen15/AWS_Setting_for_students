@@ -1,7 +1,7 @@
 # 생성된 사용자 정보 예시
-# 데이터베이스 이름 : DB_001
-# 유저 이름 : DB_001
-# 유저 암호 : 001001
+# 데이터베이스 이름 : user_001
+# 유저 이름 : db_001
+# 유저 암호 : pw_001
 
 
 import pymysql
@@ -22,9 +22,9 @@ except Exception as e:
 
 # 데이터베이스와 사용자 생성, 테이블 생성 및 초기 데이터 삽입
 def create_database_and_user(user_index):
-    user_name = f"DB_{user_index:03d}"
-    db_name = f"DB_{user_index:03d}"
-    user_password = f"{user_index:03d}{user_index:03d}"
+    user_name = f"user_{user_index:03d}"
+    db_name = f"db_{user_index:03d}"
+    user_password = f"pw_{user_index:03d}"
 
     with conn.cursor() as cursor:
         # 데이터베이스 생성
