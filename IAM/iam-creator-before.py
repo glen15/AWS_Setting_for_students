@@ -2,6 +2,10 @@ from aws_cdk import App, Stack
 from aws_cdk import aws_iam as iam
 from datetime import datetime
 import csv
+from aws_cdk import Environment
+
+# 명시적으로 계정 및 리전을 설정
+env = Environment(account="730335373015", region="us-east-1")
 
 # CSV 파일에서 학생 목록 읽기
 student_list = []
@@ -10,13 +14,10 @@ with open('students.csv', newline='') as csvfile:
     for row in reader:
         student_list.append({
             'name': row['name'],
-            'univ': row['univ'],
-            'email': row['email'],
-            'number': row['number'],
         })
 
 SchoolCode = "TEST"
-SchoolFullName = "권한경계테스트"
+SchoolFullName = "테스트"
 
 class IamStack(Stack):
     def __init__(self, scope: App, id: str, school_code: str, student_list: list, **kwargs) -> None:
@@ -29,8 +30,7 @@ class IamStack(Stack):
             "arn:aws:iam::730335373015:policy/IAMBasicAccess",
             "arn:aws:iam::730335373015:policy/SafePowerUser",
             "arn:aws:iam::730335373015:policy/DenyDestruct",
-            "arn:aws:iam::730335373015:policy/RestrictRegionSeoul",
-            "arn:aws:iam::730335373015:policy/ForcePermissionBoundaryRoleSeoul",
+            "arn:aws:iam::730335373015:policy/RestrictRegionVirginia",
         ]
         
         managed_policies = [iam.ManagedPolicy.from_managed_policy_arn(self, f"ManagedPolicy{i}", managed_policy_arn=arn) for i, arn in enumerate(managed_policy_arns, start=1)]
@@ -48,11 +48,7 @@ class IamStack(Stack):
             # null이 아닌 태그 목록 생성
             tags = [
                 {"key": "Name", "value": student['name'] or "N/A"},
-                {"key": "University", "value": student['univ'] or "N/A"},
-                # {"key": "University", "value": studentSchoolFullName or "N/A"},
-                # {"key": "Subject", "value": student['subject'] or "N/A"},
-                {"key": "Email", "value": student['email'] or "N/A"},
-                {"key": "Number", "value": student['number'] or "N/A"},
+                {"key": "University", "value": SchoolFullName or "N/A"},
                 {"key": "CreateDate", "value": create_date or "N/A"}
             ]
             
@@ -72,7 +68,6 @@ class IamStack(Stack):
             
             iam_users.append({
                 'Name': student['name'] or "N/A",
-                'Email': student['email'] or "N/A",
                 'IAM UserName': user_name,
                 'Password': password
             })
