@@ -1,7 +1,7 @@
 # 생성된 사용자 정보 예시
-# 데이터베이스 이름 : user_001
-# 유저 이름 : db_001
-# 유저 암호 : pw_001
+# 데이터베이스 이름 : user_01
+# 유저 이름 : db_01
+# 유저 암호 : pw_01
 
 import boto3
 import pymysql
@@ -21,9 +21,9 @@ except Exception as e:
 
 # 사용자 및 데이터베이스 생성 및 권한 부여
 def create_database_and_user(user_index):
-    user_name = f"user_{user_index:03d}"
-    db_name = f"db_{user_index:03d}"
-    user_password = f"pw_{user_index:03d}"
+    user_name = f"user_{user_index:02d}"
+    db_name = f"db_{user_index:02d}"
+    user_password = f"pw_{user_index:02d}"
 
     with conn.cursor() as cursor:
         # 데이터베이스 생성
@@ -39,7 +39,7 @@ def create_database_and_user(user_index):
 
 # 사용자 및 데이터베이스를 원하는 횟수만큼 생성
 number_of_users = 16  # 사용자 및 데이터베이스를 몇 개 생성할 지 지정
-for i in range(1, number_of_users + 1):
+for i in range(0, number_of_users + 1):
     create_database_and_user(i)
 
 # RDS 연결 종료
