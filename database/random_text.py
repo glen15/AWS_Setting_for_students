@@ -22,9 +22,9 @@ except Exception as e:
 
 # 데이터베이스와 사용자 생성, 테이블 생성 및 초기 데이터 삽입
 def create_database_and_user(user_index):
-    user_name = f"user_{user_index:03d}"
-    db_name = f"db_{user_index:03d}"
-    user_password = f"pw_{user_index:03d}"
+    user_name = f"user_{user_index:02d}"
+    db_name = f"db_{user_index:02d}"
+    user_password = f"pw_{user_index:02d}"
 
     with conn.cursor() as cursor:
         # 데이터베이스 생성
@@ -47,7 +47,7 @@ def create_database_and_user(user_index):
 
 # 사용자 및 데이터베이스를 원하는 횟수만큼 생성
 number_of_users = 55  # 생성할 사용자 및 데이터베이스 수
-for i in range(1, number_of_users + 1):
+for i in range(0, number_of_users + 1):
     create_database_and_user(i)
 
 # RDS 연결 종료
